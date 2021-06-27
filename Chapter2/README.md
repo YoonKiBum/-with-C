@@ -10,9 +10,11 @@ void Recursive(void) {
 ```
 이를 그림으로 표현하면 다음과 같다.<br>
 <img src = "/res/Chapter2/recursive.PNG"><br>
-데이터의 개수가 n이하는 알고리즘 A가 유리하고 n이상은 알고리즘 B가 유리한것을 확인할 수 있다.<br> 
-따라서 상황에 맞게 적절한 알고리즘을 택해야 한다. 다음의 코드를 살펴보자. <br>
-      
+Recursive 함수를 실행하는 중간에 다시 Recursive 함수가 호출되면, Recursive 함수의 복사본을 하나 더 만들어서 복사본을 실행하게 된다.<br>
+재귀함수의 중요한 점 *탈출 조건을 설정해야 한다.*<br>
+위의 코드의 경우 탈출 조건이 없으므로 무한 호출이 된다. 다음의 코드에서는 탈출 조건을 설정하여 3번 출력이 되는것을 확인할 수 있다. <br>
+RecursiveFunc.c: ([C Language 코드](/Chapter2/Example/RecursiveFunc.c))
+
 # LinearSearch.c
 LinerSearch.c: ([C Language 코드](/Chapter1/Example/LinearSearch.c))<br>
 이 경우 최악의 시간복잡도는 O(N)이다. 최선, 평균, 최악이 있지만 최악을 기준으로 잡는다.<br>
