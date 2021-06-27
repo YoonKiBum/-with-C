@@ -14,7 +14,21 @@ Recursive 함수를 실행하는 중간에 다시 Recursive 함수가 호출되�
 재귀함수의 중요한 점 *탈출 조건을 설정해야 한다.*<br>
 위의 코드의 경우 탈출 조건이 없으므로 무한 호출이 된다. 다음의 코드에서는 탈출 조건을 설정하여 3번 출력이 되는것을 확인할 수 있다. <br>
 RecursiveFunc.c: ([C Language 코드](/Chapter2/Example/RecursiveFunc.c))
+``` C
+#include <stdio.h>
 
+void Recursive(int num) {
+	if (num <= 0) // 탈출 조건
+		return;
+	printf("Recursive call! %d \n", num);
+	Recursive(num - 1);
+}
+
+int main(void) {
+	Recursive(3);
+	return 0;
+}
+```
 # LinearSearch.c
 LinerSearch.c: ([C Language 코드](/Chapter1/Example/LinearSearch.c))<br>
 이 경우 최악의 시간복잡도는 O(N)이다. 최선, 평균, 최악이 있지만 최악을 기준으로 잡는다.<br>
