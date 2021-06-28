@@ -9,3 +9,7 @@
   - 2-2. 재귀의 활용
   - 2-3. 하노이 타워: The Tower of Hanoi
     
+## 3. 연결 리스트 (Linked List) 1 ([README.md](/Chapter3/README.md))
+  - 3-1. 추상 자료형: Abstract Data Type
+  - 3-2. 배열을 이용한 리스트의 구현
+  - 프로그래밍 문제의 답안
