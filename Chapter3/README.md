@@ -192,29 +192,7 @@ int LCount(List* plist)
         return plist->numOfData;
 }
 ```
-재귀함수의 예시로 팩토리얼 함수를 들 수 있다. 먼저 팩토리얼의 수식을 쓰면 다음과 같다.<br>
-<img src = "/res/Chapter2/factorial.PNG"><br>
-이를 코드적인 관점에서 생각해보면 n이 1인 경우는 1을 반환하고 그 이외의 경우는 n-1을 반환하면 되는 것이다.<br>
-코드로 작성하면 다음과 같다. <br>
-``` C
-#include <stdio.h>
- 
-int Factorial(int num) {
-    if (num == 0) // 탈출 조건
-        return 1;
-    return num * Factorial(num - 1);
-}
- 
-int main(void) {
-    printf("1! = %d\n", Factorial(1));
-    printf("2! = %d\n", Factorial(2));
-    printf("3! = %d\n", Factorial(3));
-    printf("4! = %d\n", Factorial(4));
-    printf("9! = %d\n", Factorial(9));
-    return 0;
-}
-```
-RecursiveFactorial.c: ([C Language 코드](/Chapter2/Example/RecursiveFactorial.c))
+
 위의 코드들을 자세히 살펴보면 배열기반 리스트의 삭제가 복잡한것을 알 수 있다. <br>
 먼저 배열 리스트의 데이터 삭제를 살펴보자<br>
 배열의 특성상, 그리고 리스트의 특성상 데이터가 나란히 존재해야 하므로 다음의 그림처럼 되는것을 확인할 수 있다.<br>
