@@ -29,7 +29,7 @@ LData LRemove(List * plist);
 int LCount(List * plist);
 // 리스트에 저장되어 있는 데이터의 수를 반환한다.
 ```
-
+<hr>
  # 3-2 배열을 이용한 리스트의 구현<br>
 리스트에는 크게 두가지의 종류가 있고 이는 다음과 같다. <br>
   - 순차 리스트
@@ -201,3 +201,9 @@ int LCount(List* plist)
 또한 가장 최근에 참조가 이루어진 데이터의 인덱스 정보를 담는 변수 curPosition 역시 참조하던 데이터가 삭제되면<br>
 앞의 데이터를 참조해야 한다. 이는 다음의 그림과 같다. <br>
 <img src = "/res/Chapter3/ArrayListCurposition.PNG">
+<hr>
+실제로 리스트에는 예시의 정수 이외에 다른 자료들도 들어간다. 이번에는 그렇다면 구조체 변수의 주소 값을 저장하여 보자<br>
+구조체는 다음과 같다.<br>
+``` C
+typedef struct _point
+```
