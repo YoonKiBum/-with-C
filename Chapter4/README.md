@@ -12,10 +12,10 @@ typedef struct _node {
 이 Node 구조체를 이용하여 필요할 때미디 하니씩 동적할당하여 데이터를 저장하고 이들을 배열처럼 연결할 수 있는 <br>
 연결 리스트가 되는 것 이다. 여기에서 구조체 Node 변수를 노드라 하며 이를 그림으로 그리면 다음과 같다. <br>
 
-노드 하나의 표현
+노드 하나의 표현<br>
 <img src = "/res/Chapter4/expression.PNG">
 
-노드들의 연결 표현
+노드들의 연결 표현<br>
 <img src = "/res/Chapter4/connection.PNG">
 
 이제 노드의 삽입에 대해서 배워보자.
