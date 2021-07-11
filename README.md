@@ -12,4 +12,8 @@
 ## 3. 연결 리스트 (Linked List) 1 ([README.md](/Chapter3/README.md))
   - 3-1. 추상 자료형: Abstract Data Type
   - 3-2. 배열을 이용한 리스트의 구현
-  - 프로그래밍 문제의 답안
+
+## 4. 연결 리스트 (Linked List) 2 ([README.md](/Chapter4/README.md))
+  - 4-1. 연결 리스트의 개념적인 이해
+  - 4-2. 단순 연결 리스트의 ADT와 구현
+  - 4-3. 연결 리스트의 정렬 삽입과 구현
