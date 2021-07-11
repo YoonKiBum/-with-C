@@ -200,10 +200,98 @@ int LCount(List* plist)
 
 또한 가장 최근에 참조가 이루어진 데이터의 인덱스 정보를 담는 변수 curPosition 역시 참조하던 데이터가 삭제되면<br>
 앞의 데이터를 참조해야 한다. 이는 다음의 그림과 같다. <br>
-<img src = "/res/Chapter3/ArrayListCurposition.PNG">
-<hr>
+<img src = "/res/Chapter3/ArrayListCurposition.PNG"><br>
 실제로 리스트에는 예시의 정수 이외에 다른 자료들도 들어간다. 이번에는 그렇다면 구조체 변수의 주소 값을 저장하여 보자<br>
 구조체는 다음과 같다.<br>
 ``` C
-typedef struct _point
+typedef struct _point {
+	int xpos; // x좌표
+	int ypos; // y좌표
+} Point;
 ```
+이 Point 구조체를 위한 Point.h, Point.c는 각각 다음과 같다.<br>
+Point.h: ([C Language 코드](/Chapter3/Example/Point.h))
+Point.c: ([C Language 코드](/Chapter3/Example/Point.c))
+
+이 후 ArrayList.h, ArrayList.c를 기반으로 위의 Point 구조체를 저장할 수 있도록 하면 이 과정에서 <br>
+헤더파일은 변경이 되어도 되지만 소스파일은 변경이 되면 안된다.<br>
+헤더파일에서 달라진 점은 ``` typedef int LData; ``` 에서 ``` typedef Point * LData; ``` 으로 변경되었다.<br>
+또한 ArrayList.h의 선언문에 ``` #include "Point.h"``` 를 추가한다.
+이제 main함수는 다음과 같다.<br>
+PointListMain.c: ([C Language 코드](/Chapter3/Example/PointListMain.c))
+``` C
+#include <stdio.h>
+#include <stdlib.h>
+#include "ArrayList.h"
+#include "Point.h"
+
+int main(void) {
+	List list;
+	Point comPos;
+	Point* ppos;
+
+	ListInit(&list);
+
+	// 4개의 데이터 저장
+	ppos = (Point*)malloc(sizeof(Point));
+	SetPointPos(ppos, 2, 1);
+	LInsert(&list, ppos);
+
+	ppos = (Point*)malloc(sizeof(Point));
+	SetPointPos(ppos, 2, 2);
+	LInsert(&list, ppos);
+
+	ppos = (Point*)malloc(sizeof(Point));
+	SetPointPos(ppos, 3, 1);
+	LInsert(&list, ppos);
+
+	ppos = (Point*)malloc(sizeof(Point));
+	SetPointPos(ppos, 3, 2);
+	LInsert(&list, ppos);
+
+	// 저장된 데이터의 출력
+	printf("현재 데이터의 수는 : %d \n", LCount(&list));
+
+	if (LFirst(&list, &ppos)) {
+		ShowPosition(ppos);
+
+		while (LNext(&list, &ppos)) {
+			ShowPosition(ppos);
+		}
+	}
+	printf("\n");
+
+	// xpos가 2인 모든 데이터 삭제
+	comPos.xpos = 2;
+	comPos.ypos = 0;
+
+	if (LFirst(&list, &ppos)) {
+		if (PointComp(ppos, &comPos) == 1) {
+			ppos = LRemove(&list);
+			free(ppos);
+		}
+
+		while (LNext(&list, &ppos)) {
+			if (PointComp(ppos, &comPos) == 1) {
+				ppos = LRemove(&list);
+				free(ppos);
+			}
+		}
+	}
+
+	// 삭제 후 남은 데이터 전체 출력
+	printf("현재 데이터의 수는 : %d \n", LCount(&list));
+
+	if (LFirst(&list, &ppos)) {
+		ShowPosition(ppos);
+
+		while (LNext(&list, &ppos)) {
+			ShowPosition(ppos);
+		}
+	}
+	printf("\n");
+
+	return 0;
+}
+```
+
