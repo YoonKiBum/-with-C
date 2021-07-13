@@ -61,7 +61,50 @@ tail = newNode;
 즉 head가 가리키는 것이 NULL이 아니므로 tail->next = newNode;를 실행하면 다음과 같다.(새로 추가한 노드는 10이라 가정한다.)
 <img src = "/res/Chapter4/addTail.PNG" width = "800" height = "400"><br>
 
+<hr>
 
+조회 역시 간단한데 먼저 다음의 코드를 통해 쉽게 이해할 수 있다. <br>
+이 경우 그림 자료는 생략하겠다.
+``` C
+if(head == NULLL) {
+	printf("저장된 자연수가 존재하지 않습니다.\n");
+}
+else {
+	cur = head;			  // cur이 리스트의 첫 번째 노드를 가리킨다.
+	printf("%d ", cur->data);	  // 첫 번째 데이터 출력
+	 
+	while(cur->next != NULL) {	  // 연결된 노드가 존재한다면
+		cur = cur->next;	  // cur이 다음 노드를 가리키게 한다.
+		printf("%d ", cur->data); // cur이 가리키는 노드를 출력한다.
+	}
+}
+```
+
+<hr>
+
+삭제는 조금 여러울 수 있으므로 그림의 자료와 함께 보고 먼저 소스코드를 소개하겠다. <br>
+``` C
+if(head == NULL) {
+	return 0;
+}
+else {
+	Node * delNode = head;
+	Node * delNextNode = head->next;
+	
+	printf("%d을 삭제합니다. \n", head->data);
+	free(delNode);			// 첫 번째 노드 삭제
+	
+	while(delNextNode != NULL){     // 두 번째 노드 삭제
+		delNode = delNextNode;
+		delNextNode = delNextNode->next;
+		
+		printf("%d을 삭제합니다. \n", delNode->data);
+		free(delNode);
+	}
+}
+```
+먼저 delNode, delNextNode가 있는것을 확인할 수 있는데 이는 나중에 더미 노드를 넣게 되면 없어지게 되지만 지금은 우선 이렇게 <br>
+보면 먼저 head가 가리키는 노드를 그냥 삭제해 버리면 그 다음 노드에 접근이 불가능 하기 때문에 두 개의 포인터 변수를 두고 
  # 3-2 배열을 이용한 리스트의 구현<br>
 리스트에는 크게 두가지의 종류가 있고 이는 다음과 같다. <br>
   - 순차 리스트
