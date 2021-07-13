@@ -58,7 +58,7 @@ else
 
 tail = newNode;
 ```
-즉 head가 가리키는 것이 NULL이 아니므로 tail->next = newNodde;를 실행하면 다음과 같다.(새로 추가한 노드는 10이라 가정한다.)
+즉 head가 가리키는 것이 NULL이 아니므로 tail->next = newNode;를 실행하면 다음과 같다.(새로 추가한 노드는 10이라 가정한다.)
 <img src = "/res/Chapter4/addTail.PNG" width = "800" height = "400"><br>
 
 
