@@ -29,7 +29,7 @@ Node * tail = NULL; // 리스트의 꼬리를 가리키는 포인터 변수
 Node * cur = NULL;  // 저장된 데이터의 조회에 사용되는 포인터 변수
 ```
 초기 상황을 그림으로 표현하면 다음과 같다. <br>
-<img src = "/res/Chapter4/initial.PNG"><br>
+<img src = "/res/Chapter4/initial.PNG" width = "800" height = "300"><br>
 이 후 다음의 세 문장에 의해 노드가 생성 및 초기화가 된다.
 ``` C
 newNode = (Node*)malloc(sizeof(Node));	// 노드의 생성
@@ -37,7 +37,7 @@ newNode->data = readData;		// 노드에 데이터 저장
 newNode->newxt = NULL;			// 노드의 next를 NULL로 초기화
 ```
 생성 및 초기화 직후 그림으로 표현하면 다음과 같다. (새로운 노드가 5라고 가정)<br>
-<img src = "/res/Chapter4/newNode.PNG"><br>
+<img src = "/res/Chapter4/newNode.PNG" width = "800" height = "500"><br>
 이 후 포인터 변수 head가 NULL을 가리키므로 (첫 노드이므로) head는 newNode를 가리키게 되고 tail역시 노드의 <br>
 가르키므로 다음의 코드 및 그림과 같다.<br>
 ``` C
@@ -48,7 +48,7 @@ else
 
 tail = newNode;
 ```
-<img src = "/res/Chapter4/headTail.PNG"><br>
+<img src = "/res/Chapter4/headTail.PNG" width = "800" height = "400"><br>
 초기과정은 위와 같고 그 이후로 두번째 이후부터의 노드에서는 다음과 같다. 먼저 다음의 코드를 보자. <br>
 ``` C
 if(head == NULL)
@@ -59,7 +59,7 @@ else
 tail = newNode;
 ```
 즉 head가 가리키는 것이 NULL이 아니므로 tail->next = newNodde;를 실행하면 다음과 같다.(새로 추가한 노드는 10이라 가정한다.)
-<img src = "/res/Chapter4/addTail.PNG"><br>
+<img src = "/res/Chapter4/addTail.PNG" width = "800" height = "400"><br>
 
 
  # 3-2 배열을 이용한 리스트의 구현<br>
