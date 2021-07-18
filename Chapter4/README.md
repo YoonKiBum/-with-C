@@ -84,7 +84,7 @@ typedef struct _linkedList {
 } LinkedList;
 ```
 
-헤더 파일은 다음과 같다. DLinkedList.h: ([C Language 코드](/Chapter3/Example/DLinkedList.h)) <br>
+헤더 파일은 다음과 같다. DLinkedList.h: ([C Language 코드](/Chapter4/Example/DLinkedList.h)) <br>
 이를 기준으로 초기화와 삽입을 살펴보자. 초기화는 다음과 같다. <br>
 
 ``` C
@@ -106,264 +106,75 @@ void LInsert(List * plist, LData data) {
 }
 ```
 
-
-리스트 자료구조는 *데이터를 나란히 저장한다는 점과 중복 데이터의 저장을 허용한다*는 큰 특성이 있다. <br>
-이제 위의 ADT를 기반으로 main함수를 작성하면 다음과 같다.<br>
-ListMain.c: ([C Language 코드](/Chapter3/Example/ListMain.c))
+여기에서 볼 수 있는것은 comp 즉 노드를 정렬하기 위한 기준이 마련되어있느냐에 따라 FInsert, SInsert로 나뉜다는 것이다. <br>
+그러나 이들은 내부적으로 정의된 함수이기에 사용자가 직접 호출할 수 없는 함수이다. 먼저 FInsert는 다음과 같다. <br>
 ``` C
-#include <stdio.h>
-#include "ArrayList.h"
+void FInsert(List * plist, LData data) {
+	Node * newNode = (Node*)malloc(sizeof(Node));		// 새 노드 저장
+	newNode->data = data;					// 새 노드에 데이터 저장
+	
+	newNode->next = plist->head->next; 			// 새 노드가 다른 노드를 가리키게 함
+	plist->head->next = newNode;				// 더미 노드가 새 노드를 가리키게 함
+	
+	(plist->numOfData)++;					// 저장된 노드의 수를 하나 증가시킴
+)
+```
+그림으로 보면 다음과 같다. <br>
+<img src = "/res/Chapter4/FInsert.PNG"><br>
 
-int main(void)
-{
-	/*** ArrayList의 생성 및 초기화 ***/
-	List list;
-	int data;
-	ListInit(&list);
+<hr>
 
-	/*** 5개의 데이터 저장 ***/
-	LInsert(&list, 11);  LInsert(&list, 11);
-	LInsert(&list, 22);  LInsert(&list, 22);
-	LInsert(&list, 33);
-
-	/*** 저장된 데이터의 전체 출력 ***/
-	printf("현재 데이터의 수: %d \n", LCount(&list));
-
-	if (LFirst(&list, &data))    // 첫 번째 데이터 조회
-	{
-		printf("%d ", data);
-
-		while (LNext(&list, &data))    // 두 번째 이후의 데이터 조회
-			printf("%d ", data);
-	}
-	printf("\n\n");
-
-	/*** 숫자 22을 탐색하여 모두 삭제 ***/
-	if (LFirst(&list, &data))
-	{
-		if (data == 22)
-			LRemove(&list);
-
-		while (LNext(&list, &data))
-		{
-			if (data == 22)
-				LRemove(&list);
-		}
-	}
-
-	/*** 삭제 후 저장된 데이터 전체 출력 ***/
-	printf("현재 데이터의 수: %d \n", LCount(&list));
-
-	if (LFirst(&list, &data))
-	{
-		printf("%d ", data);
-
-		while (LNext(&list, &data))
-			printf("%d ", data);
-	}
-	printf("\n\n");
-	return 0;
-}
+데이터 조회 역시 배열 리스트의 그것과 비슷하지만 before과 Dummy node가 존재한다는것에서 차이가 있다. <br>
+먼저 LFirst 함수를 보자.
+``` C
+int LFisrt(List * plist, LData * pdata) {
+	if(plist->head->next == NULL)		// 더미 노드가 NULL을 가리킨다면
+		return FALSE;
+	plist->before = plist->head;		// before는 더미 노드를 가리키게 함
+	plist->cur = plist->head->next; 	// cur은 첫번째 노드를 가리키게 함
+	
+	*pdata = plist->cur->data;		// 첫 번째 노드의 데이터를 전달
+	return TRUE;				// 데이터 반환 성공!
 }
 ```
-위의 ListMain.c를 기반으로 하는 ArrayList.h, ArrayList.c도 다음과 같다.<br>
-ArrayList.h: ([C Language 코드](/Chapter3/Example/ArrayList.h))
+역시 그림으로 나타내면 다음과 같다. <br>
+<img src = "/res/Chapter4/LFisrt.PNG"><br>
+
+LNext 역시를 보면 다음과 같다. <br>
 ``` C
-#ifndef __ARRAY_LIST_H__
-#define __ARRAY_LIST_H__
-
-#define TRUE    1
-#define FALSE   0
-
-/*** ArrayList의 정의 ****/
-#define LIST_LEN        100
-typedef int LData;
-
-typedef struct __ArrayList
-{
-        LData arr[LIST_LEN];
-        int numOfData;
-        int curPosition;
-} ArrayList;
-
-
-/*** ArrayList와 관련된 연산들 ****/
-typedef ArrayList List;
-
-void ListInit(List* plist);
-void LInsert(List* plist, LData data);
-
-int LFirst(List* plist, LData* pdata);
-int LNext(List* plist, LData* pdata);
-
-LData LRemove(List* plist);
-int LCount(List* plist);
-
-#endif
-```
-ArrayList.c: ([C Language 코드](/Chapter3/Example/ArrayList.c))
-``` C
-#include <stdio.h>
-#include "ArrayList.h"
-
-void ListInit(List* plist)
-{
-        (plist->numOfData) = 0;
-        (plist->curPosition) = -1;
-}
-
-void LInsert(List* plist, LData data)
-{
-        if (plist->numOfData > LIST_LEN)
-        {
-                puts("저장이 불가능합니다.");
-                return;
-        }
-
-        plist->arr[plist->numOfData] = data;
-        (plist->numOfData)++;
-}
-
-int LFirst(List* plist, LData* pdata)
-{
-        if (plist->numOfData == 0)
-                return FALSE;
-
-        (plist->curPosition) = 0;
-        *pdata = plist->arr[0];
-        return TRUE;
-}
-
-int LNext(List* plist, LData* pdata)
-{
-        if (plist->curPosition >= (plist->numOfData) - 1)
-                return FALSE;
-
-        (plist->curPosition)++;
-        *pdata = plist->arr[plist->curPosition];
-        return TRUE;
-}
-
-LData LRemove(List* plist)
-{
-        int rpos = plist->curPosition;
-        int num = plist->numOfData;
-        int i;
-        LData rdata = plist->arr[rpos];
-
-        for (i = rpos; i < num - 1; i++)
-                plist->arr[i] = plist->arr[i + 1];
-
-        (plist->numOfData)--;
-        (plist->curPosition)--;
-        return rdata;
-}
-
-int LCount(List* plist)
-{
-        return plist->numOfData;
+int LFisrt(List * plist, LData * pdata) {
+	if(plist->cur->next == NULL)		// cur이 NULL을 가리킨다면
+		return FALSE;
+	plist->before = plist->cur;		// cur이 가리키던 것을 before가 가리킴
+	plist->cur = plist->cur->next; 		// cur은 그 다음 노드를 가리킴
+	
+	*pdata = plist->cur->data;		// cur이 가리키는 노드의 데이터 전달
+	return TRUE;				// 데이터 반환 성공!
 }
 ```
+역시 그림으로 나타내면 다음과 같다. <br>
+<img src = "/res/Chapter4/LNext.PNG"><br>
 
-위의 코드들을 자세히 살펴보면 배열기반 리스트의 삭제가 복잡한것을 알 수 있다. <br>
-먼저 배열 리스트의 데이터 삭제를 살펴보자<br>
-배열의 특성상, 그리고 리스트의 특성상 데이터가 나란히 존재해야 하므로 다음의 그림처럼 되는것을 확인할 수 있다.<br>
-<img src = "/res/Chapter3/ArrayListRemove.PNG">
+<hr>
 
-또한 가장 최근에 참조가 이루어진 데이터의 인덱스 정보를 담는 변수 curPosition 역시 참조하던 데이터가 삭제되면<br>
-앞의 데이터를 참조해야 한다. 이는 다음의 그림과 같다. <br>
-<img src = "/res/Chapter3/ArrayListCurposition.PNG"><br>
-실제로 리스트에는 예시의 정수 이외에 다른 자료들도 들어간다. 이번에는 그렇다면 구조체 변수의 주소 값을 저장하여 보자<br>
-구조체는 다음과 같다.<br>
+노드의 삭제 역시 배열 기반 리스트의 삭제와 비슷하다. <br>
 ``` C
-typedef struct _point {
-	int xpos; // x좌표
-	int ypos; // y좌표
-} Point;
-```
-이 Point 구조체를 위한 Point.h, Point.c는 각각 다음과 같다.<br>
-Point.h: ([C Language 코드](/Chapter3/Example/Point.h))
-Point.c: ([C Language 코드](/Chapter3/Example/Point.c))
-
-이 후 ArrayList.h, ArrayList.c를 기반으로 위의 Point 구조체를 저장할 수 있도록 하면 이 과정에서 <br>
-헤더파일은 변경이 되어도 되지만 소스파일은 변경이 되면 안된다.<br>
-헤더파일에서 달라진 점은 ``` typedef int LData; ``` 에서 ``` typedef Point * LData; ``` 으로 변경되었다.<br>
-또한 ArrayList.h의 선언문에 ``` #include "Point.h"``` 를 추가한다.
-이제 main함수는 다음과 같다.<br>
-PointListMain.c: ([C Language 코드](/Chapter3/Example/PointListMain.c))
-``` C
-#include <stdio.h>
-#include <stdlib.h>
-#include "ArrayList.h"
-#include "Point.h"
-
-int main(void) {
-	List list;
-	Point comPos;
-	Point* ppos;
-
-	ListInit(&list);
-
-	// 4개의 데이터 저장
-	ppos = (Point*)malloc(sizeof(Point));
-	SetPointPos(ppos, 2, 1);
-	LInsert(&list, ppos);
-
-	ppos = (Point*)malloc(sizeof(Point));
-	SetPointPos(ppos, 2, 2);
-	LInsert(&list, ppos);
-
-	ppos = (Point*)malloc(sizeof(Point));
-	SetPointPos(ppos, 3, 1);
-	LInsert(&list, ppos);
-
-	ppos = (Point*)malloc(sizeof(Point));
-	SetPointPos(ppos, 3, 2);
-	LInsert(&list, ppos);
-
-	// 저장된 데이터의 출력
-	printf("현재 데이터의 수는 : %d \n", LCount(&list));
-
-	if (LFirst(&list, &ppos)) {
-		ShowPosition(ppos);
-
-		while (LNext(&list, &ppos)) {
-			ShowPosition(ppos);
-		}
-	}
-	printf("\n");
-
-	// xpos가 2인 모든 데이터 삭제
-	comPos.xpos = 2;
-	comPos.ypos = 0;
-
-	if (LFirst(&list, &ppos)) {
-		if (PointComp(ppos, &comPos) == 1) {
-			ppos = LRemove(&list);
-			free(ppos);
-		}
-
-		while (LNext(&list, &ppos)) {
-			if (PointComp(ppos, &comPos) == 1) {
-				ppos = LRemove(&list);
-				free(ppos);
-			}
-		}
-	}
-
-	// 삭제 후 남은 데이터 전체 출력
-	printf("현재 데이터의 수는 : %d \n", LCount(&list));
-
-	if (LFirst(&list, &ppos)) {
-		ShowPosition(ppos);
-
-		while (LNext(&list, &ppos)) {
-			ShowPosition(ppos);
-		}
-	}
-	printf("\n");
-
-	return 0;
+LData LRemove(List * plist) {
+	Node * rpos = plist->cur;		// 소멸 대상의 주소 값을 rpos에 저장
+	LData rdata = rpos->data;		// 소멸 대상의 데이터를 rdata에 저장
+	
+	plist->before->next = plist->cur->next;	// 소멸 대상을 리스트에서 제거
+	plist->cur = plist->before;		// cur이 가리키는 위치를 재조정!
+	
+	free(rpos);				// 리스트에서 제거된 노드 소멸
+	(plist->numOfData)--;			// 저장된 데이터의 수 하나 감소
+	return rdata;				// 제거된 노드의 데이터 반환
 }
 ```
+<img src = "/res/Chapter4/LRemove.PNG"><br>
+
+전체의 코드는 각각 다음과 같다. <br>
+DLinkedList.h: ([C Language 코드](/Chapter4/Example/DLinkedList.h))
+DLinkedList.c: ([C Language 코드](/Chapter4/Example/DLinkedList.c))
+DLinkedListMain.c: ([C Language 코드](/Chapter4/Example/DLinkedListMain.c))
 
