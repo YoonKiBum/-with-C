@@ -174,7 +174,7 @@ LData LRemove(List * plist) {
 <img src = "/res/Chapter4/LRemove.PNG"><br>
 
 전체의 코드는 각각 다음과 같다. <br>
-DLinkedList.h: ([C Language 코드](/Chapter4/Example/DLinkedList.h))
-DLinkedList.c: ([C Language 코드](/Chapter4/Example/DLinkedList.c))
-DLinkedListMain.c: ([C Language 코드](/Chapter4/Example/DLinkedListMain.c))
+DLinkedList.h: ([C Language 코드](/Chapter4/Example/DLinkedList.h)) <br>
+DLinkedList.c: ([C Language 코드](/Chapter4/Example/DLinkedList.c)) <br>
+DLinkedListMain.c: ([C Language 코드](/Chapter4/Example/DLinkedListMain.c)) <br>
 
