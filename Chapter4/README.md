@@ -120,7 +120,7 @@ void FInsert(List * plist, LData data) {
 )
 ```
 그림으로 보면 다음과 같다. <br>
-<img src = "/res/Chapter4/FInsert.PNG"><br>
+<img src = "/res/Chapter4/Finsert.PNG"><br>
 
 <hr>
 
