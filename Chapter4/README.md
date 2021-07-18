@@ -140,9 +140,9 @@ int LFisrt(List * plist, LData * pdata) {
 역시 그림으로 나타내면 다음과 같다. <br>
 <img src = "/res/Chapter4/LFirst.PNG"><br>
 
-LNext 역시를 보면 다음과 같다. <br>
+LNext 역시 보면 다음과 같다. <br>
 ``` C
-int LFisrt(List * plist, LData * pdata) {
+int LNext(List * plist, LData * pdata) {
 	if(plist->cur->next == NULL)		// cur이 NULL을 가리킨다면
 		return FALSE;
 	plist->before = plist->cur;		// cur이 가리키던 것을 before가 가리킴
