@@ -18,97 +18,94 @@ typedef struct _node {
 노드들의 연결 표현<br>
 <img src = "/res/Chapter4/connection.PNG">
 
-이제 노드의 삽입에 대해서 배워보자.
+먼저 ADT를 살펴보자. ADT는 다음과 같다. <br>
+``` C
+void ListInit(List * plist); 
+// 초기화할 리스트의 주소 값을 인자로 전달한다.
+// 리스트 생성 후 제일 먼저 호출되어야 하는 함수이다.
 
+void LInsert(List * plist, LData data);
+// 리스트에 데이터를 저장한다. 매개변수 data에 전달된 값을 저장한다.
+
+int LFirst(List * plist, LData * pdata);
+// 첫 번째 데이터가 pdata가 가리키는 메모리에 저장된다.
+// 데이터의 참조를 위한 초기화가 진행된다.
+// 참조 성공 시 TRUE(1), 실패 시 FALSE(0) 반환
+
+int LNext(List * plist, LData * pdata);
+// 참조된 데이터의 다음 데이터가 pdata가 가리키는 메모리에 저장된다.
+// 순차적인 참조를 위해서 반복 호출이 가능하다.
+// 참조를 새로 시작하려면 먼저 LFirst함수를 호출해야 한다.
+// 참조 성공 시 TRUE(1), 실패 시 FALSE(0) 반환
+
+LData LRemove(List * plist);
+// LFirst 또는 LNext 함수의 마지막 반환 데이터를 삭제한다.
+// 삭제된 데이터는 반환된다.
+// 마지막 반환 데이터를 삭제하므로 연이은 반복 호출을 허용하지 않는다.
+
+int LCount(List * plist);
+// 리스트에 저장되어 있는 데이터의 수를 반환한다.
+
+void SetSortRule(List * plist, int (*comp)(LData d1, LData d2));
+// 리스트에 정렬의 기준이 되는 함수를 등록한다.
+```
+
+배열 리스트와 비교해보면 SetSortRule함수가 추가된 것을 볼 수 있으며 이는 Head에 추가할 지 Tail에 추가할 지 정하는 것이다. <br>
+장단점은 각각 다음과 같다. <br>
+<img src = "/res/Chapter4/table.PNG"><br>
+
+또한 SetSortRule 함수의 매개변수를 보면 함수 포인터가 매개변수로 존재하는것을 알 수 있는데 반환형이 int, LData형 2개를 전달받는 함수의
+주소값을 전달하는 것이다. 예를 들면 다음의 함수의 주소값이 매개변수로 전달될 수 있다.
+``` C
+int WhoIsPrecede(LData d1, LData d2) {
+	if (d1 < d2)
+		return 0; // d1이 정렬 순서가 앞서는 경우
+	else
+		return 1; // d2가 정렬 순서가 앞서는 경우
+}
+```
 <hr>
 
-먼저 간략하게 알아보자. 다음의 3가지 포인터 변수들이 존재한다. <br>
-``` C
-Node * head = NULL; // 리스트의 머리를 가리키는 포인터 변수
-Node * tail = NULL; // 리스트의 꼬리를 가리키는 포인터 변수
-Node * cur = NULL;  // 저장된 데이터의 조회에 사용되는 포인터 변수
-```
-초기 상황을 그림으로 표현하면 다음과 같다. <br>
-<img src = "/res/Chapter4/initial.PNG" width = "800" height = "300"><br>
-이 후 다음의 세 문장에 의해 노드가 생성 및 초기화가 된다.
-``` C
-newNode = (Node*)malloc(sizeof(Node));	// 노드의 생성
-newNode->data = readData;		// 노드에 데이터 저장
-newNode->newxt = NULL;			// 노드의 next를 NULL로 초기화
-```
-생성 및 초기화 직후 그림으로 표현하면 다음과 같다. (새로운 노드가 5라고 가정)<br>
-<img src = "/res/Chapter4/newNode.PNG" width = "800" height = "500"><br>
-이 후 포인터 변수 head가 NULL을 가리키므로 (첫 노드이므로) head는 newNode를 가리키게 되고 tail역시 노드의 <br>
-가르키므로 다음의 코드 및 그림과 같다.<br>
-``` C
-if(head == NULL)
-	head = newNode;
-else
-	tail->next = newNode;
-
-tail = newNode;
-```
-<img src = "/res/Chapter4/headTail.PNG" width = "800" height = "400"><br>
-초기과정은 위와 같고 그 이후로 두번째 이후부터의 노드에서는 다음과 같다. 먼저 다음의 코드를 보자. <br>
-``` C
-if(head == NULL)
-	head = newNode;
-else
-	tail->next = newNode;
-
-tail = newNode;
-```
-즉 head가 가리키는 것이 NULL이 아니므로 tail->next = newNode;를 실행하면 다음과 같다.(새로 추가한 노드는 10이라 가정한다.)
+먼저 다음의 형태의 기본적인 노드의 연결상태를 보고 단점을 파악해보자. <br>
 <img src = "/res/Chapter4/addTail.PNG" width = "800" height = "400"><br>
+이 경우 노드의 추가 및 삭제 또는 조회의 방법에서 첫 번째 노드와 두 번째 노드의 연결에 차이가 있다. 따라서 이를 방지하기 위해 <br>
+헤드의 바로 다음에 dummy node를 넣어 어떤 위치에 있던 방법을 일관화 할 수 있다.<br> 
 
 <hr>
 
-조회 역시 간단한데 먼저 다음의 코드를 통해 쉽게 이해할 수 있다. <br>
-이 경우 그림 자료는 생략하겠다.
+이제 연결 리스트를 구현해보자. 다음의 구조체를 기반으로 정의한다. <br>
 ``` C
-if(head == NULLL) {
-	printf("저장된 자연수가 존재하지 않습니다.\n");
+typedef struct _linkedList {
+	Node * head;			  // 더미 노드를 가리키는 멤버
+	Node * cur;			  // 참조 및 삭제를 돕는 멤버
+	Node * before;			  // 삭제를 돕는 멤버
+	int numOfData;			  // 저장된 데이터의 수를 기록하기 위한 멤버
+	int (*comp)(LDatat d1, LData d2); // 정렬의 기준을 등록하기 위한 멤버
+} LinkedList;
+```
+
+헤더 파일은 다음과 같다. DLinkedList.h: ([C Language 코드](/Chapter3/Example/DLinkedList.h)) <br>
+이를 기준으로 초기화와 삽입을 살펴보자. 초기화는 다음과 같다. <br>
+
+``` C
+void ListInit(List * plist) {
+	plist->head = (Node*)malloc(sizeof(Node));	// 더미 노드의 생성
+	plist->head->next = NULL;
+	plist->comp = NULL;
+	plist->numOfData = 0;
 }
-else {
-	cur = head;			  // cur이 리스트의 첫 번째 노드를 가리킨다.
-	printf("%d ", cur->data);	  // 첫 번째 데이터 출력
-	 
-	while(cur->next != NULL) {	  // 연결된 노드가 존재한다면
-		cur = cur->next;	  // cur이 다음 노드를 가리키게 한다.
-		printf("%d ", cur->data); // cur이 가리키는 노드를 출력한다.
-	}
+```
+<img src = "/res/Chapter4/init.PNG"><br>
+노드를 새로 추가하기 위한 함수는 다음과 같다. <br>
+``` C
+void LInsert(List * plist, LData data) {
+	if(plist->comp == NULL)		// 정렬 기준이 없다면
+		FInsert(plist, data);   // 머리에 노드를 추가
+	else				// 정렬 기준이 있다면
+		SInsert(plist, data);   // 정렬 기준에 의하여 노드를 추가
 }
 ```
 
-<hr>
-
-삭제는 조금 여러울 수 있으므로 그림의 자료와 함께 보고 먼저 소스코드를 소개하겠다. <br>
-``` C
-if(head == NULL) {
-	return 0;
-}
-else {
-	Node * delNode = head;
-	Node * delNextNode = head->next;
-	
-	printf("%d을 삭제합니다. \n", head->data);
-	free(delNode);			// 첫 번째 노드 삭제
-	
-	while(delNextNode != NULL){     // 두 번째 노드 삭제
-		delNode = delNextNode;
-		delNextNode = delNextNode->next;
-		
-		printf("%d을 삭제합니다. \n", delNode->data);
-		free(delNode);
-	}
-}
-```
-먼저 delNode, delNextNode가 있는것을 확인할 수 있는데 이는 나중에 더미 노드를 넣게 되면 없어지게 되지만 지금은 우선 이렇게 <br>
-보면 먼저 head가 가리키는 노드를 그냥 삭제해 버리면 그 다음 노드에 접근이 불가능 하기 때문에 두 개의 포인터 변수를 두고 
- # 3-2 배열을 이용한 리스트의 구현<br>
-리스트에는 크게 두가지의 종류가 있고 이는 다음과 같다. <br>
-  - 순차 리스트
-  - 연결 리스트
 
 리스트 자료구조는 *데이터를 나란히 저장한다는 점과 중복 데이터의 저장을 허용한다*는 큰 특성이 있다. <br>
 이제 위의 ADT를 기반으로 main함수를 작성하면 다음과 같다.<br>
