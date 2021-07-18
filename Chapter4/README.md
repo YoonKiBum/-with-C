@@ -138,7 +138,7 @@ int LFisrt(List * plist, LData * pdata) {
 }
 ```
 역시 그림으로 나타내면 다음과 같다. <br>
-<img src = "/res/Chapter4/LFisrt.PNG"><br>
+<img src = "/res/Chapter4/LFirst.PNG"><br>
 
 LNext 역시를 보면 다음과 같다. <br>
 ``` C
