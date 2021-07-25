@@ -151,7 +151,7 @@ int LCount(List * plist);
 
 #endif
 ```
-
+<img src = "/res/Chapter5/DBLinkedList.JPG">
 리스트의 초기화는 각각의 포인터 변수를 NULL로 초기화 하면 된다. 다음과 같다. <br>
 ``` C
 void ListInit(List* plist) {
@@ -160,7 +160,6 @@ void ListInit(List* plist) {
 	plist->numOfData = 0;
 }
 ```
-<img src = "/res/Chapter5/DBLinkedList.JPG">
 
 <hr>
 
