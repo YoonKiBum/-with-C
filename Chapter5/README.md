@@ -42,12 +42,67 @@ void LInsertFront(List* plist, Data data) { // Head에 추가
 이번에는 조회를 살펴보자. 조회의 경우도 Fisrt, Next즉 두가지의 경우에 대한 함수가 존재한다.<br>
 LFisrt의 경우 Head가 없기 때문에 tail이 가리키는 다음 노드를 Cur로 한 뒤 이를 반환한다. 그림으로 표현하면 다음과 같다.<br>
 <img src = "/res/Chapter5/LFirst.JPG">
+``` C
+int LFirst(List* plist, Data* pdata) {
+	if (plist->tail == NULL) { // 비어있는 경우
+		return FALSE;
+	}
+	plist->before = plist->tail; // before가 tail을 가리키게 한다.
+	plist->cur = plist->tail->next; // cur이 tail의 다음을 가리키게 한다
 
+	*pdata = plist->cur->data; 
+	return TRUE;
+}
+```
 LNext의 경우도 단순히 before가 cur을 가리키게 하고 cur에 cur이 가리키는 다음 노드를 가리키게 하면 된다. <br>
 그 후 cur이 가리키는 노드를 반환하면 된다.마찬가지로 그림으로 나타내면 다음과 같다. <br>
 <img src = "/res/Chapter5/LNext.JPG">
+``` C
+int LNext(List* plist, Data* pdata) {
+	if (plist->tail == NULL) { // 비어있는 경우
+		return FALSE;
+	}
+	plist->before = plist->cur; // before가 cur을 가리키게 한다
+	plist->cur = plist->cur->next; // cur이 cur의 다음을 가리키게 한다.
+
+	*pdata = plist->cur->data;
+	return TRUE;
+}
+```
 이 두가지 함수 모두 리스트에 원소가 없을 경우에 대해서 처리가 필요한데 단순하게 ADT를 참조하여 노드가 존재하지 않으면<br>
 False를 반환하면 된다.<br>
+
+<hr>
+
+이번에는 노드의 삭제에 대해서 알아보자. <br>
+노드의 삭제의 경우 두가지의 경우가 존재하는데 삭제할 노드가 tail인 경우 또는 아닌경우 삭제할 노드가 tail인 경우 <br>
+노드가 하나밖에 없는 경우 역시 추가로 고려를 해주어야 한다. 다음의 코드를 살펴보자.<br>
+``` C
+Data LRemove(List* plist) {
+	Node* rpos = plist->cur;
+	Data rdata = rpos->data;
+
+	
+	if (rpos == plist->tail) { // 삭제하려는 노드가 tail인 경우
+		if (plist->tail == plist->tail->next) { // 노드가 하나인 경우
+			plist->tail == NULL;
+		}
+		else {
+			plist->tail = plist->before;
+		}
+	}
+
+	plist->before->next = plist->cur->next;
+	plist->cur = plist->before;
+	
+	free(rpos);
+	(plist->numOfData)--;
+	return rdata;
+}
+```
+위에서 볼 수 있듯 삭제하려는 노드가 tail이 아닌 경우는 다음의 그림처럼 삭제를 진행하면 된다. <br>
+<img src = "/res/Chapter5/LRemove.JPG">
+그러나 삭제하려는 노드가 tail인 경우는 단순하게 tail을 하나 앞으로 이동시키면 된다. 단순히 plist->tail = plist->before;을 통해서 말이다. <br>
 
 노드 하나의 표현<br>
 <img src = "/res/Chapter4/expression.PNG">
