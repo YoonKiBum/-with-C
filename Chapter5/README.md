@@ -105,7 +105,7 @@ Data LRemove(List* plist) {
 그러나 삭제하려는 노드가 tail인 경우는 단순하게 tail을 하나 앞으로 이동시키면 된다. 단순히 plist->tail = plist->before;을 통해서 말이다. <br>
 
 전체의 코드는 각각 다음과 같다. <br>
-CLinkedList.h: ([C Language 코드](/Chapter5/Exa0mple/CLinkedList.h)) <br>
+CLinkedList.h: ([C Language 코드](/Chapter5/Example/CLinkedList.h)) <br>
 CLinkedList.c: ([C Language 코드](/Chapter5/Example/CLinkedList.c)) <br>
 CLinkedListMain.c: ([C Language 코드](/Chapter5/Example/CLinkedListMain.c)) <br>
 
