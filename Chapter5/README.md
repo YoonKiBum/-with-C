@@ -109,3 +109,109 @@ CLinkedList.h: ([C Language 코드](/Chapter5/Example/CLinkedList.h)) <br>
 CLinkedList.c: ([C Language 코드](/Chapter5/Example/CLinkedList.c)) <br>
 CLinkedListMain.c: ([C Language 코드](/Chapter5/Example/CLinkedListMain.c)) <br>
 
+<hr>
+
+# 5-2 양방향 연결 리스트
+
+양방향 연결 리스트의 경우 앞서서 구현했던 단순 연결 리스트에서 좌측 혹은 우측을 연결하는 포인터 변수의 존재가 큰 차이점 이다. <br>
+그렇다면 헤더파일을 보고 양방향 연결 리스트를 구현해보자. 헤더파일은 다음과 같다. <br>
+``` C
+#ifndef __DB_LINKED_LIST_H__
+#define __DB_LINKED_LIST_H__
+
+#define TRUE	1
+#define FALSE	0
+
+typedef int Data;
+
+typedef struct _node
+{
+	Data data;
+	struct _node * next;
+	struct _node * prev;
+} Node;
+
+typedef struct _dbLinkedList
+{
+	Node * head;
+	Node * cur;
+	int numOfData;
+} DBLinkedList;
+
+typedef DBLinkedList List;
+
+void ListInit(List * plist);
+void LInsert(List * plist, Data data);
+
+int LFirst(List * plist, Data * pdata);
+int LNext(List * plist, Data * pdata);
+int LPrevious(List * plist, Data * pdata);
+
+int LCount(List * plist);
+
+#endif
+```
+
+리스트의 초기화는 각각의 포인터 변수를 NULL로 초기화 하면 된다. 다음과 같다. <br>
+``` C
+void ListInit(List* plist) {
+	plist->head = NULL;
+	plist->cur = NULL;
+	plist->numOfData = 0;
+}
+```
+
+<hr>
+
+삽입의 경우 2가지의 경우가 존재하는데 각각 리스트가 비어있을때, 비어있지 않을 때 이다. <br>
+이를 코드로 작성하면 다음과 같다. <br>
+``` C
+void LInsert(List* plist, Data data) {
+	Node* newNode = (Node*)malloc(sizeof(Node));
+	newNode->data = data;
+
+	newNode->next = plist->head;
+	newNode->prev = NULL;
+	plist->head = newNode;
+
+	(plist->numOfData)++;
+}
+```
+
+<hr>
+
+데이터의 조회의 경우 양방향 연결 리스트의 특성으로 좌측, 우측을 모두 조회할 수 있다. <br>
+이를 함수료 표현하면 각각 LFisrt, LNext, LPrevious 이며 다음과 같다.
+```C
+int LFirst(List* plist, Data* pdata) {
+	if (plist->head == NULL)
+		return FALSE;
+
+	plist->cur = plist->head;
+	*pdata = plist->head->data;
+	return TRUE;
+}
+
+int LNext(List* plist, Data* pdata) {
+	if (plist->head == NULL)
+		return FALSE;
+
+	plist->cur = plist->cur->next;
+	*pdata = plist->cur->data;
+	return TRUE;
+}
+
+int LPrevious(List* plist, Data* pdata) {
+	if (plist->head == NULL)
+		return FALSE;
+
+	plist->cur = plist->cur->prev;
+	*pdata = plist->cur->data;
+	return TRUE;
+}
+```
+
+전체의 코드는 각각 다음과 같다. <br>
+DBLinkedList.h: ([C Language 코드](/Chapter5/Example/DBLinkedList.h)) <br>
+DBLinkedList.c: ([C Language 코드](/Chapter5/Example/DBLinkedList.c)) <br>
+DBLinkedListMain.c: ([C Language 코드](/Chapter5/Example/DBCLinkedListMain.c)) <br>
