@@ -57,6 +57,7 @@ int LFirst(List* plist, Data* pdata) {
 LNext의 경우도 단순히 before가 cur을 가리키게 하고 cur에 cur이 가리키는 다음 노드를 가리키게 하면 된다. <br>
 그 후 cur이 가리키는 노드를 반환하면 된다.마찬가지로 그림으로 나타내면 다음과 같다. <br>
 <img src = "/res/Chapter5/LNext.JPG">
+
 ``` C
 int LNext(List* plist, Data* pdata) {
 	if (plist->tail == NULL) { // 비어있는 경우
@@ -69,6 +70,7 @@ int LNext(List* plist, Data* pdata) {
 	return TRUE;
 }
 ```
+
 이 두가지 함수 모두 리스트에 원소가 없을 경우에 대해서 처리가 필요한데 단순하게 ADT를 참조하여 노드가 존재하지 않으면<br>
 False를 반환하면 된다.<br>
 
