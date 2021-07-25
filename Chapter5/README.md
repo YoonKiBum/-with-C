@@ -155,6 +155,7 @@ int LCount(List * plist);
 ```
 <img src = "/res/Chapter5/DBLinkedList.JPG">
 리스트의 초기화는 각각의 포인터 변수를 NULL로 초기화 하면 된다. 다음과 같다. <br>
+
 ``` C
 void ListInit(List* plist) {
 	plist->head = NULL;
@@ -167,6 +168,7 @@ void ListInit(List* plist) {
 
 삽입의 경우 2가지의 경우가 존재하는데 각각 리스트가 비어있을때, 비어있지 않을 때 이다. <br>
 이를 코드로 작성하면 다음과 같다. <br>
+
 ``` C
 void LInsert(List* plist, Data data) {
 	Node* newNode = (Node*)malloc(sizeof(Node));
