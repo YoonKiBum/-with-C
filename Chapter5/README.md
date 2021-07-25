@@ -114,7 +114,7 @@ CLinkedListMain.c: ([C Language 코드](/Chapter5/Example/CLinkedListMain.c)) <b
 # 5-2 양방향 연결 리스트
 
 양방향 연결 리스트의 경우 앞서서 구현했던 단순 연결 리스트에서 좌측 혹은 우측을 연결하는 포인터 변수의 존재가 큰 차이점 이다. <br>
-그렇다면 헤더파일을 보고 양방향 연결 리스트를 구현해보자. 헤더파일은 다음과 같다. <br>
+그렇다면 헤더파일과 그림을 보고 양방향 연결 리스트를 구현해보자. 헤더파일은 다음과 같다. <br>
 ``` C
 #ifndef __DB_LINKED_LIST_H__
 #define __DB_LINKED_LIST_H__
@@ -160,6 +160,7 @@ void ListInit(List* plist) {
 	plist->numOfData = 0;
 }
 ```
+<img src = "/res/Chapter5/DBLinkedList.JPG">
 
 <hr>
 
