@@ -5,16 +5,49 @@
 
 위의 그림에서 head나 tail에 새로운 노드 1을 추가한다고 가정하면 1 -> 2 -> 4 -> 6 -> 8 -> 1 .... 의 형태 혹은 <br>
 2 -> 4 6 -> 8 ->  1 -> 2.... 즉 서로 같은 형태가 되므로 head, tail의 구분이 명확히 존재하지 않는다. <br>
+유일한 차이점은 tail이 가리키는 노드가 다르다는 것 이다. 따라서 이를 머리에 추가하는 함수, 꼬리에 추가하는 함수는 각각 다음과 같다. <br>
 
-먼저 다음의 구조체를 살펴보자 <br>
 ``` C
-typedef struct _node {
-  int data; // 데이터를 담을 공간
-  struct _node * next; // 연결의 도구
-} Node;
+void LInsert(List* plist, Data data) { // tail에 추가
+	Node* newNode = (Node*)malloc(sizeof(Node));
+	newNode->data = data;
+
+	if (plist->tail == NULL) { // 비어있는 경우
+		plist->tail = newNode;
+		newNode->next = newNode;
+	}
+	else {
+		newNode->next = plist->tail->next; // 새 노드와 기존에 저장된 노드 연결
+		plist->tail->next = newNode; // 기존 노드의 tail이 새 노드를 가리키게 연결
+		plist->tail = newNode; // tail이 새로 추가된 노드를 가르키게 함
+	}
+	(plist->numOfData)++;
+}
+
+void LInsertFront(List* plist, Data data) { // Head에 추가
+	Node* newNode = (Node*)malloc(sizeof(Node));
+	newNode->data = data;
+
+	if(plist->tail == NULL) { // 비어있는 경우
+		plist->tail = newNode;
+		newNode->next = newNode;
+	}
+	else {
+		newNode->next = plist->tail->next; // 새 노드와 기존에 저장된 노드 연결
+		plist->tail->next = newNode; // 기존 노드의 tail이 새 노드를 가르키게 연결
+	}
+	(plist->numOfData)++;
+}
 ```
-이 Node 구조체를 이용하여 필요할 때마다 하씩 동적할당하여 데이터를 저장하고 이들을 배열처럼 연결할 수 있는 <br>
-연결 리스트가 되는 것 이다. 여기에서 구조체 Node 변수를 노드라 하며 이를 그림으로 그리면 다음과 같다. <br>
+이번에는 조회를 살펴보자. 조회의 경우도 Fisrt, Next즉 두가지의 경우에 대한 함수가 존재한다.<br>
+LFisrt의 경우 Head가 없기 때문에 tail이 가리키는 다음 노드를 Cur로 한 뒤 이를 반환한다. 그림으로 표현하면 다음과 같다.<br>
+<img src = "/res/Chapter5/LFirst.JPG">
+
+LNext의 경우도 단순히 before가 cur을 가리키게 하고 cur에 cur이 가리키는 다음 노드를 가리키게 하면 된다. <br>
+그 후 cur이 가리키는 노드를 반환하면 된다.마찬가지로 그림으로 나타내면 다음과 같다. <br>
+<img src = "/res/Chapter5/LNext.JPG">
+이 두가지 함수 모두 리스트에 원소가 없을 경우에 대해서 처리가 필요한데 단순하게 ADT를 참조하여 노드가 존재하지 않으면<br>
+False를 반환하면 된다.<br>
 
 노드 하나의 표현<br>
 <img src = "/res/Chapter4/expression.PNG">
