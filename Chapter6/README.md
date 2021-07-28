@@ -120,5 +120,10 @@ ArrayBaseStack.h: ([C Language 코드](/Chapter6/Example/ArrayBaseStack.h)) <br>
 ArrayBaseStack.c: ([C Language 코드](/Chapter6/Example/ArrayBaseStack.c)) <br>
 ArrayBaseStackMain.c: ([C Language 코드](/Chapter6/Example/ArrayBaseStackMain.c)) <br>
 
+<hr>
+
 # 스택의 연결 리스트 기반 구현
+앞서 스택을 배열로 구현하였는데 연결 리스트로도 구현할 수 있다. 단순하게 자료구조가 바뀐것 이외에는 개념적 단계에서의 구현에는  <br>
+큰 차이가 없으므로 바로 헤더파일과 이를 통한 구현을 보일것이다. <br>
+
 
