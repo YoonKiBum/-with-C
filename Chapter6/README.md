@@ -32,42 +32,89 @@ Data SPeek(Stack * pstack);
 # 배열 기반 스택 구현
 
 스택에서 구현해야 하는 함수는 push, pop이 있고 이를 top이라는 스택의 가장 윗 부분을 담당하는 변수를 이용하여 구현한다. <br>
-push의 경우 top을 한칸 올리고 top이 가리키는 위치에 데이터를 저장한다. <br>
+가장 중요한 함수는 push, pop으로 push의 경우 top을 한칸 올리고 top이 가리키는 위치에 데이터를 저장하고 <br>
 pop의 경우 top이 가리키는 데이터를 반환하고, top을 아래로 한칸 내린다. <br>
+push연산을 그림으로 표현하면 다음과 같다. <br>
+<img src =  "/res/Chapter6/push.JPG">
+확인할 수 있는 점은 top의 시작은 -1 이며 하나의 데이터가 들어올 때 0이 된다는 것이다. 처음에 A를 추가할 때 <br>
+top이 하나 증가한 뒤 해당 top의 위치에 원소가 추가되는것을 확인할 수 있으며 이후로도 마찬가지 이다. <br>
 
+pop연산역시 그림으로 표현하면 다음과 같다. <br>
+<img src = "/res/Chapter6/pop.JPG">
 
+다음은 헤더 파일이다. 이를 기반으로 ArrayBaseStack.c를 구현해보자.<br>
 ``` C
-void LInsert(List* plist, Data data) { // tail에 추가
-	Node* newNode = (Node*)malloc(sizeof(Node));
-	newNode->data = data;
+#ifndef __AB_STACK_H__
+#define __AB_STACK_H__
 
-	if (plist->tail == NULL) { // 비어있는 경우
-		plist->tail = newNode;
-		newNode->next = newNode;
-	}
-	else {
-		newNode->next = plist->tail->next; // 새 노드와 기존에 저장된 노드 연결
-		plist->tail->next = newNode; // 기존 노드의 tail이 새 노드를 가리키게 연결
-		plist->tail = newNode; // tail이 새로 추가된 노드를 가르키게 함
-	}
-	(plist->numOfData)++;
-}
+#define TRUE	1
+#define FALSE	0
+#define STACK_LEN	100
 
-void LInsertFront(List* plist, Data data) { // Head에 추가
-	Node* newNode = (Node*)malloc(sizeof(Node));
-	newNode->data = data;
+typedef int Data;
 
-	if(plist->tail == NULL) { // 비어있는 경우
-		plist->tail = newNode;
-		newNode->next = newNode;
-	}
-	else {
-		newNode->next = plist->tail->next; // 새 노드와 기존에 저장된 노드 연결
-		plist->tail->next = newNode; // 기존 노드의 tail이 새 노드를 가르키게 연결
-	}
-	(plist->numOfData)++;
+typedef struct _arrayStack
+{
+	Data stackArr[STACK_LEN];
+	int topIndex;
+} ArrayStack;
+
+typedef ArrayStack Stack;
+
+void StackInit(Stack * pstack);
+int SIsEmpty(Stack * pstack);
+
+void SPush(Stack * pstack, Data data);
+Data SPop(Stack * pstack);
+Data SPeek(Stack * pstack);
+
+#endif
 }
 ```
+
+이를 기준으로 작성한 ArrayBaseStack.c는 다음과 같다. <br>
+``` C
+#include "ArrayBaseStack.h"
+#include <stdio.h>
+
+void StackInit(Stack* pstack) {
+	pstack->topIndex = -1;
+}
+
+int SIsEmpty(Stack* pstack) {
+	if (pstack->topIndex == -1)
+		return TRUE;
+	else
+		return FALSE;
+}
+
+void SPush(Stack* pstack, Data data) {
+	pstack->topIndex += 1;
+	pstack->stackArr[pstack->topIndex] = data;
+}
+
+Data SPop(Stack* pstack) {
+	if (SIsEmpty(pstack)) {
+		printf("Stack memory error!");
+		return -1;
+	}
+
+	Data rdata = pstack->stackArr[pstack->topIndex];
+	pstack->topIndex -= 1;
+
+	return rdata;
+}
+
+Data SPeek(Stack* pstack) {
+	if (SIsEmpty(pstack)) {
+		printf("Stack memory error!");
+		return -1;
+	}
+
+	return pstack->stackArr[pstack->topIndex];
+}
+```
+
 이번에는 조회를 살펴보자. 조회의 경우도 Fisrt, Next즉 두가지의 경우에 대한 함수가 존재한다.<br>
 LFisrt의 경우 Head가 없기 때문에 tail이 가리키는 다음 노드를 Cur로 한 뒤 이를 반환한다. 그림으로 표현하면 다음과 같다.<br>
 <img src = "/res/Chapter5/LFirst.JPG">
