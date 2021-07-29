@@ -126,4 +126,94 @@ ArrayBaseStackMain.c: ([C Language 코드](/Chapter6/Example/ArrayBaseStackMain.
 앞서 스택을 배열로 구현하였는데 연결 리스트로도 구현할 수 있다. 단순하게 자료구조가 바뀐것 이외에는 개념적 단계에서의 구현에는  <br>
 큰 차이가 없으므로 바로 헤더파일과 이를 통한 구현을 보일것이다. <br>
 
+``` C
+#ifndef __LB_STACK_H__
+#define __LB_STACK_H__
 
+#define TRUE	1
+#define FALSE	0
+
+typedef int Data;
+
+typedef struct _node
+{
+	Data data;
+	struct _node * next;
+} Node;
+
+typedef struct _listStack
+{
+	Node * head;
+} ListStack;
+
+
+typedef ListStack Stack;
+
+void StackInit(Stack * pstack);
+int SIsEmpty(Stack * pstack);
+
+void SPush(Stack * pstack, Data data);
+Data SPop(Stack * pstack);
+Data SPeek(Stack * pstack);
+
+#endif
+```
+
+위의 헤더파일을 기준으로 ListBaseStack.c를 구현하면 다음과 같다. <br>
+``` C
+#include "ListBaseStack.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+void StackInit(Stack* pstack) {
+	pstack->head = NULL;
+}
+
+int SIsEmpty(Stack* pstack) {
+	if (pstack->head == NULL)
+		return TRUE;
+	else
+		return FALSE;
+}
+
+void SPush(Stack* pstack, Data data) {
+	Node* newNode = (Node*)malloc(sizeof(Node));
+	newNode->data = data;
+
+	newNode->next = pstack->head;
+	pstack->head = newNode;
+}
+
+Data SPop(Stack* pstack) {
+	if (SIsEmpty(pstack)) {
+		printf("stack memory error!");
+		exit(-1);
+	}
+
+	Data rdata;
+	Node * rNode;
+
+	rNode = pstack->head;
+	rdata = pstack->head->data;
+	
+	pstack->head = pstack->head->next;
+
+	free(rNode);
+
+	return rdata;
+}
+
+Data SPeek(Stack* pstack) {
+	if (SIsEmpty(pstack)) {
+		printf("stack memory error!");
+		exit(-1);
+	}
+
+	return pstack->head->data;
+}
+```
+
+전체의 코드는 각각 다음과 같다. <br>
+ListBaseStack.h: ([C Language 코드](/Chapter6/Example/ListBaseStack.h)) <br>
+ListBaseStack.c: ([C Language 코드](/Chapter6/Example/ListBaseStack.c)) <br>
+ListBaseStackMain.c: ([C Language 코드](/Chapter6/Example/ListBaseStackMain.c)) <br>
