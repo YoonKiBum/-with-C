@@ -132,17 +132,16 @@ Data QPeek(Queue* pq) {
 전체의 코드는 각각 다음과 같다. <br>
 CircularQueue.h: ([C Language 코드](/Chapter7/Example/CircularQueue.h)) <br>
 CircularQueue.c: ([C Language 코드](/Chapter7/Example/CircularQueue.c)) <br>
-CircularQueueMain.c: ([C Language 코드](/Chapter6/Example/CircularQueueMain.c)) <br>
+CircularQueueMain.c: ([C Language 코드](/Chapter7/Example/CircularQueueMain.c)) <br>
 
 <hr>
 
-# 스택의 연결 리스트 기반 구현
-앞서 스택을 배열로 구현하였는데 연결 리스트로도 구현할 수 있다. 단순하게 자료구조가 바뀐것 이외에는 개념적 단계에서의 구현에는  <br>
-큰 차이가 없으므로 바로 헤더파일과 이를 통한 구현을 보일것이다. <br>
+# 큐의 연결 리스트 기반 구현
+이번에는 큐를 연결 리스트 기반으로 구현하여 보자. 큐를 통해 구현하였으므로 바로 헤더파일을 살펴보자. <br>
 
 ``` C
-#ifndef __LB_STACK_H__
-#define __LB_STACK_H__
+#ifndef __LB_QUEUE_H__
+#define __LB_QUEUE_H__
 
 #define TRUE	1
 #define FALSE	0
@@ -155,79 +154,82 @@ typedef struct _node
 	struct _node * next;
 } Node;
 
-typedef struct _listStack
+typedef struct _lQueue
 {
-	Node * head;
-} ListStack;
+	Node * front;
+	Node * rear;
+} LQueue;
 
+typedef LQueue Queue;
 
-typedef ListStack Stack;
+void QueueInit(Queue * pq);
+int QIsEmpty(Queue * pq);
 
-void StackInit(Stack * pstack);
-int SIsEmpty(Stack * pstack);
-
-void SPush(Stack * pstack, Data data);
-Data SPop(Stack * pstack);
-Data SPeek(Stack * pstack);
+void Enqueue(Queue * pq, Data data);
+Data Dequeue(Queue * pq);
+Data QPeek(Queue * pq);
 
 #endif
 ```
 
-위의 헤더파일을 기준으로 ListBaseStack.c를 구현하면 다음과 같다. <br>
+위의 헤더파일을 기준으로 ListBaseQueue.c를 구현하면 다음과 같다. <br>
 ``` C
-#include "ListBaseStack.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "ListBaseQueue.h"
 
-void StackInit(Stack* pstack) {
-	pstack->head = NULL;
+void QueueInit(Queue* pq) {
+	pq->front = NULL;
+	pq->rear = NULL;
 }
 
-int SIsEmpty(Stack* pstack) {
-	if (pstack->head == NULL)
+int QIsEmpty(Queue* pq) {
+	if (pq->front == NULL)
 		return TRUE;
 	else
 		return FALSE;
 }
 
-void SPush(Stack* pstack, Data data) {
+void Enqueue(Queue* pq, Data data) {
 	Node* newNode = (Node*)malloc(sizeof(Node));
 	newNode->data = data;
 
-	newNode->next = pstack->head;
-	pstack->head = newNode;
+	if (QIsEmpty(pq)) {
+		pq->front = newNode;
+		pq->rear = newNode;
+	}
+	else {
+		pq->rear->next = newNode;
+		pq->rear = newNode;
+	}
 }
 
-Data SPop(Stack* pstack) {
-	if (SIsEmpty(pstack)) {
-		printf("stack memory error!");
+Data Dequeue(Queue* pq) {
+	if (QIsEmpty(pq)) {
+		printf("Queue Memory Error!\n");
 		exit(-1);
 	}
 
-	Data rdata;
-	Node * rNode;
+	Node* rNode = pq->front;
+	Data rData = pq->front->data;
 
-	rNode = pstack->head;
-	rdata = pstack->head->data;
-	
-	pstack->head = pstack->head->next;
-
+	pq->front = pq->front->next;
 	free(rNode);
 
-	return rdata;
+	return rData;
 }
 
-Data SPeek(Stack* pstack) {
-	if (SIsEmpty(pstack)) {
-		printf("stack memory error!");
+Data QPeek(Queue* pq) {
+	if (QIsEmpty(pq)) {
+		printf("Queue Memory Error!\n");
 		exit(-1);
 	}
 
-	return pstack->head->data;
+	return pq->front->data;
 }
 ```
 
 전체의 코드는 각각 다음과 같다. <br>
-ListBaseStack.h: ([C Language 코드](/Chapter6/Example/ListBaseStack.h)) <br>
-ListBaseStack.c: ([C Language 코드](/Chapter6/Example/ListBaseStack.c)) <br>
-ListBaseStackMain.c: ([C Language 코드](/Chapter6/Example/ListBaseStackMain.c)) <br>
+ListBaseQueue.h: ([C Language 코드](/Chapter7/Example/ListBaseQueue.h)) <br>
+ListBaseQueue.c: ([C Language 코드](/Chapter7/Example/ListBaseQueue.c)) <br>
+ListBaseQueueMain.c: ([C Language 코드](/Chapter7/Example/ListBaseQueueMain.c)) <br>
