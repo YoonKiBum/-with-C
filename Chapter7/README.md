@@ -32,14 +32,12 @@ Data QPeek(Queue * pq);
 
 큐에서는 중요한 두가지 함수가 있다. 바로 Enqueue, Dequeue이며 각각 큐에 데이터를 삽입하는 함수, 삭제하는 함수이다. <br>
 가장 먼저 Enqueue를 살펴보자 아래의 그림을 통해 쉽게 볼 수 있다. <br>
-<img src = "/res/Chapter7/Enqueue.JPG">
+<img src = "/res/Chapter7/Enqueue.JPG" width = 700 height = 400> <br>
 큐의 머리를 가리키는 F는 그대로 있고 꼬리를 가리키는 R이 하나 증가하고 해당 위치에 데이터가 추가되는것을 알 수 있다. <br>
 
-그렇다면 dequeue연산을 확인해보자. 배열로 큐를 만들 경우 F의 위치가 고정되는 방법, 움직이는 방법 2가지로 구분되는데 보통 움직이는 방법을 채택하며 <br>
-이를 조금더 쉽게 사용하기 위해 원형 큐를 사용한다. 원형큐의 그림은 다음과 같다. <br>
-<img src = "/res/Chapter7/CQueue.JPG">
-이 경우 한 칸을 비워두었기 때문에 F와 R이 같으면 Empty 상태이며 R이 가리키는 위치의 앞을 F가 가리키면 Full로 나타낼 수 있는 것이다. <br>
-그림은 각각 다음과 같다. <br>
+그렇다면 dequeue연산을 확인해보자. 배열로 큐를 만들 경우 F의 위치가 고정되는 방법, 움직이는 방법 2가지로 구분되는데 보통 움직이는 방법을 채택하며 이를 조금더 쉽게 사용하기 위해 원형 큐를 사용한다. 원형큐의 그림은 다음과 같다. <br>
+<img src = "/res/Chapter7/CQueue.JPG" width = 500 height = 450> <br>
+이 경우 한 칸을 비워두었기 때문에 F와 R이 같으면 Empty 상태이며 R이 가리키는 위치의 앞을 F가 가리키면 Full로 나타낼 수 있는 것이다. 그림은 각각 다음과 같다. <br>
 
 <img src = "/res/Chapter7/Empty&Full.JPG">
 
@@ -132,9 +130,9 @@ Data QPeek(Queue* pq) {
 ```
 
 전체의 코드는 각각 다음과 같다. <br>
-ArrayBaseStack.h: ([C Language 코드](/Chapter6/Example/ArrayBaseStack.h)) <br>
-ArrayBaseStack.c: ([C Language 코드](/Chapter6/Example/ArrayBaseStack.c)) <br>
-ArrayBaseStackMain.c: ([C Language 코드](/Chapter6/Example/ArrayBaseStackMain.c)) <br>
+CircularQueue.h: ([C Language 코드](/Chapter7/Example/CircularQueue.h)) <br>
+CircularQueue.c: ([C Language 코드](/Chapter7/Example/CircularQueue.c)) <br>
+CircularQueueMain.c: ([C Language 코드](/Chapter6/Example/CircularQueueMain.c)) <br>
 
 <hr>
 
