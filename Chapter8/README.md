@@ -41,24 +41,26 @@ A, B, C, D, E 와 같은 요소 <br>
 이번에는 이진 트리를 구현해보자. 앞의 자료구조과 마찬가지로 연결 리스트, 배열 모두 구현이 가능하다. <br>
 
 ``` C
-void QueueInit(Queue * pt);
-// 큐의 초기화를 진행한다.
-// 큐 생성 후 제일 먼저 호출되어야 하는 함수이다.
+BTreeNode * MakeBTreeNode(void);
+// 이진 트리 토드를 생성하여 그 주소 값을 반환한다.
 
-int QIsEmpty(Queue * pq);
-// 큐가 빈 경우 TRUE(1)을, 그렇지 않은 경우 FALSE(0)을 반환한다.
+BTData GetData(BTreeNode * bt);
+// 노드에 저장된 데이터를 반환한다.
 
-void Enqueue(Queue * pq, Data data);
-// 큐에 데이터를 저장한다. 매개변수 data로 전달된 값을 저장한다.
+void SetData(BTreeNode * bt, BTData data);
+// 노드에 데이터를 저장한다. data로 전달된 값을 저장한다.
 
-Data Dequeue(Queue * pq);
-// 저장순서가 가장 앞선 데이터를 삭제한다.
-// 삭제된 데이터는 반환한다.
-// 본 함수의 호출을 위해서는 데이터가 하나 이상 존재함이 보장되어야 한다.
+BTreeNode * GetLeftSubTree(BTreeNode * bt);
+// 왼쪽 서브 트리의 주소 값을 반환한다.
 
-Data QPeek(Queue * pq);
-// 저장순서가 가장 앞선 데이터를 반환하되 삭제하지 않는다.
-// 본 함수의 호출을 위해서는 데이터가 하나 이상 존재함이 보장되어야 한다.
+BTreeNode * GetRightSubTree(BTreeNode * bt);
+// 오른쪽 서브 트리의 주소 값을 반환한다.
+
+void MakeLeftSubTree(BTreeNode * main, BTreeNode * sub);
+// 왼쪽 서브 트리를 연결한다.
+
+void MakeRightSubTree(BTreeNode * main, BTreeNode * sub);
+// 오른쪽 서브 트리를 연결한다.
 ```
 
 이제 이 ADT를 기반으로 배열 기반, 연결 리스트 기반으로 구현해보자.
