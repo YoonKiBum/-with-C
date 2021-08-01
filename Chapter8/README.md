@@ -63,8 +63,75 @@ void MakeRightSubTree(BTreeNode * main, BTreeNode * sub);
 // 오른쪽 서브 트리를 연결한다.
 ```
 
-이제 이 ADT를 기반으로 배열 기반, 연결 리스트 기반으로 구현해보자.
+이제 이 ADT를 기반으로 배열 기반, 연결 리스트 기반으로 구현해보겠다. 먼저 헤더파일을 보자. <br>
+``` C
+#ifndef __BINARY_TREE_H__
+#define __BINARY_TREE_H__
 
+typedef int BTData;
+
+typedef struct _bTreeNode
+{
+	BTData data;
+	struct _bTreeNode * left;
+	struct _bTreeNode * right;
+} BTreeNode;
+
+/*** BTreeNode 관련 연산들 ****/
+BTreeNode * MakeBTreeNode(void);
+BTData GetData(BTreeNode * bt);
+void SetData(BTreeNode * bt, BTData data);
+
+BTreeNode * GetLeftSubTree(BTreeNode * bt);
+BTreeNode * GetRightSubTree(BTreeNode * bt);
+
+void MakeLeftSubTree(BTreeNode * main, BTreeNode * sub);
+void MakeRightSubTree(BTreeNode * main, BTreeNode * sub);
+
+#endif
+```
+
+위의 ADT를 기반으로 구현한 BinaryTree.c는 다음과 같다. <br>
+``` C
+#include <stdio.h>
+#include "BinaryTree.h"
+
+BTreeNode* MakeBTreeNode(void) {
+	BTreeNode* nd = (BTreeNode*)malloc(sizeof(BTreeNode));
+	nd->left = NULL;
+	nd->right = NULL;
+	return nd;
+}
+
+BTData GetData(BTreeNode* bt) {
+	return bt->data;
+}
+
+void SetData(BTreeNode* bt, BTData data) {
+	bt->data = data;
+}
+
+BTreeNode* GetLeftSubTree(BTreeNode* bt) {
+	return bt->left;
+}
+
+BTreeNode* GetRightSubTree(BTreeNode* bt) {
+	return bt->right;
+}
+
+void MakeLeftSubTree(BTreeNode* main, BTreeNode* sub) {
+	if (main->left != NULL)
+		free(main->left);
+	main->left = sub;
+}
+
+void MakeRightSubTree(BTreeNode* main, BTreeNode* sub) {
+	if (main->right != NULL)
+		free(main->right);
+	main->right = sub;
+}
+
+```
 # 7-2 큐의 배열 기반 구현
 
 큐에서는 중요한 두가지 함수가 있다. 바로 Enqueue, Dequeue이며 각각 큐에 데이터를 삽입하는 함수, 삭제하는 함수이다. <br>
