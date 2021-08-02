@@ -132,7 +132,49 @@ void MakeRightSubTree(BTreeNode* main, BTreeNode* sub) {
 }
 
 ```
-# 7-2 큐의 배열 기반 구현
+# 이진 트리의 순회(Traversal)
+
+이진 트리의 순회 즉 조회에는 3가지의 방법이 있으며 다음이 그것이다. 1. 전위 순회, 2. 중위 순회, 3. 후위 순회 각각 루트노드를 처음에, 중간에, 마지막에 <br>
+조회하는 방법이며 각각의 그림은 다음과 같다. 좌측부터 전위 순회, 중위 순회, 후위 순회이다. <br>
+<img src = "/res/Chapter8/traversal.JPG"> <br>
+루트의 높이가 3이상이더라도 해당 과정을 재귀적으로 반복하면 되기 때문에 나머지 역시 쉽게 이해할 수 있다. 노드의 순회를 출력으로 대체한다고 하면 중의 순회는 다음과 같다. <br>
+``` C
+void InorderTraverse(BTreeNode * bt) {	
+	if(bt == NULL) {		// 탈출조건 bt가 NULL이면 재귀 탈출
+		return;
+	}
+	
+	InorderTraverse(bt->left);	// 1단계 왼쪽 서브 트리의 순회
+	printf("%d \n", bt->data);	// 2단계 루트 노드의 방문
+	InorderTraverse(bt->right);	// 3단계 오른쪽 서브 트리의 순회
+}
+```
+
+전위연산도 다음과 같다. 
+``` C
+void PreorderTraverse(BTreeNode * bt) {	
+	if(bt == NULL) {		// 탈출조건 bt가 NULL이면 재귀 탈출
+		return;
+	}
+	
+	printf("%d \n", bt->data);	
+	PreorderTraverse(bt->left);	
+	PreorderTraverse(bt->right);	
+}
+```
+
+후위연산도 다음과 같다.
+``` C
+void PostorderTraverse(BTreeNode * bt) {	
+	if(bt == NULL) {		// 탈출조건 bt가 NULL이면 재귀 탈출
+		return;
+	}
+	
+	PostorderTraverse(bt->left);	
+	PostorderTraverse(bt->right);	
+	printf("%d \n", bt->data);	
+}
+```
 
 큐에서는 중요한 두가지 함수가 있다. 바로 Enqueue, Dequeue이며 각각 큐에 데이터를 삽입하는 함수, 삭제하는 함수이다. <br>
 가장 먼저 Enqueue를 살펴보자 아래의 그림을 통해 쉽게 볼 수 있다. <br>
