@@ -181,3 +181,5 @@ void PostorderTraverse(BTreeNode * bt) {
 # 수식 트리의 구현
 7 + 4 * 2 - 1 이라는 식이 있다고 생각해보자. 이 식은 컴퓨터가 다음의 그림처럼 수식 트리로 인식을 한다. <br>
 <img src = "/res/Chapter8/expressiontree.JPG" width = "600" height = "500">
+
+<img src = "/res/Chapter8/circle.JPG">
