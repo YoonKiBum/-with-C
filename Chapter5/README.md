@@ -218,4 +218,4 @@ int LPrevious(List* plist, Data* pdata) {
 전체의 코드는 각각 다음과 같다. <br>
 DBLinkedList.h: ([C Language 코드](/Chapter5/Example/DBLinkedList.h)) <br>
 DBLinkedList.c: ([C Language 코드](/Chapter5/Example/DBLinkedList.c)) <br>
-DBLinkedListMain.c: ([C Language 코드](/Chapter5/Example/DBCLinkedListMain.c)) <br>
+DBLinkedListMain.c: ([C Language 코드](/Chapter5/Example/DBCinkedListMain.c)) <br>
